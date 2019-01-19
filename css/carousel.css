@@ -1,0 +1,87 @@
+/*Defining body CSS-----------*/
+
+body > section, #on_off
+{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+/*-----------------------------*/
+
+/*Carousel CSS*/
+#carousel
+{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.fas
+{
+	font-size: 2.5em;
+	cursor: pointer;
+	color: #50b4c8;
+}
+
+#slideshow
+{
+	width: 75%;
+	height: 350px;
+	border-style: solid;
+	border-width: 3px;
+	border-color: #50b4c8;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+#slideshow > div
+{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	transition-property: transform;
+	transition-duration: 1s;
+	transition-timing-function: linear;
+}
+
+.carouselItem
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	align-items: center;
+	width: 100%;
+	min-width: 100%;
+	height: 100%;
+}
+
+.carouselItem > img
+{
+	display: block;
+	width: 60%;
+	height: 100%;
+}
+
+.carouselItem > div
+{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 100%;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color: #50b4c8;
+}
+
+#carousel > div
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	align-items: center;
+	flex-wrap: nowrap;
+	overflow: hidden;
+}
