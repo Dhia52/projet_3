@@ -1,83 +1,110 @@
 $(function (){
 
 	//Global variables needed for the script
-	let slideIndex = 0;
 	let sliding;
+	let autoControls = []; //array of DOM elements that stop auto sliding
 	//--------------------------------------
+	
+	let diapo = {
+		index: 0,
+		auto: "",
 
-	//Functions of the script-----------------------------------------------
+		//Defines carousel behaviour along with CSS
+		slide() {
+			//Condition to avoid going "out of bounds"
+			if (diapo.index === 4 || diapo.index === -1) {
+				diapo.index = 0;
+			}
+			//Animation plays
+			let step = diapo.index * (-100);
+			$('#slideshow > div').css('transform', 'translateX(' + step + '%)');
+		},
 
-	//Defines carousel behaviour along with CSS
-	function slide() {
+		nextSlide () {
+			diapo.index ++;
+			diapo.slide();
+		},
 
-		//Condition to avoid going "out of bounds"
-		if (slideIndex === 4 || slideIndex === -1) {
-			slideIndex = 0;
+		prevSlide () {
+			diapo.index --;
+			diapo.slide();
+		},
+
+		setAutoCarouselOn () {
+			diapo.auto = true;
+			sliding = setInterval(diapo.nextSlide, 5000);
+
+			$('#on').hide();
+			$('#off').show();
+
+			autoControls.forEach(control => {
+				control.setAutoControl();
+			});
+		},
+
+		setAutoCarouselOff () {
+			diapo.auto = false;
+			clearInterval(sliding);
+
+			$('#off').hide();
+			$('#on').show();
+
+			autoControls.forEach(control => {
+				control.setAutoControl();
+			});
+		}
+	}
+
+	//Carousel controls class-------------------------
+	class CarouselControl {
+		constructor(element, inputType, action, autoOff) {
+			this.element = element; //gets DOM element
+			this.inputType = inputType; //gets input type for event
+			this.action = action; //DOM element event
+			this.autoOff = autoOff; //boolean for elements that will stop auto scrolling
+			this.createControl();
+		}
+		
+		//creates DOM element event
+		createControl() {
+			this.element.on(this.inputType, this.action);
+			if (this.autoOff) {
+				autoControls.push(this);
+			}
 		}
 
-		//Animation plays
-		let step = slideIndex * (-100);
-		$('#slideshow > div').css('transform', 'translateX(' + step + '%)');
-	}
-
-	//Displaying the next slide of the carousel
-	function nextSlide() {
-		slideIndex ++;
-		slide();
-	}
-
-	//Displaying the previous slide of the carousel
-	function prevSlide() {
-		slideIndex --;
-		slide();
-	}
-
-	//Sets automatic slides on
-	function autoCarouselOn() {
-
-		sliding = setInterval(nextSlide, 5000); //Auto slides
-
-		$('#on_off').html('<i class="fas fa-pause-circle"></i>') //"Play" button becomes "pause" button
-			.on('click', autoCarouselOff)
-			.off('click', autoCarouselOn);
-
-		$('body').on('keyup', autoCarouselOff);
-		$('#slideshow, #next, #prev').on('click', autoCarouselOff);
-	}
-
-	//Sets automatic slides off
-	function autoCarouselOff() {
-
-		clearInterval(sliding); //Stops auto slides
-
-		$('#on_off').html('<i class="fas fa-play-circle"></i>') //"Pause" button becomes "play" button
-			.on('click', autoCarouselOn)
-			.off('click', autoCarouselOff);
-
-		$('body').off('keyup', autoCarouselOff);
-		$('#slideshow, #next, #prev').off('click', autoCarouselOff);
-	}
-	//--------------------------------------------------------------------------------------------
-
-	//Main events of the DOM elements------------------------------------------------------------------
-
-	//Changing slides through keypresses
-	$('body').on('keyup', function(event) {
-
-		let key = event.which; //Gets code of the pressed key
-
-		if (key === 37) { //If "arrow left" is pressed..
-			prevSlide();
-		} else if (key === 39) { //If "arrow right" is pressed...
-			nextSlide();
+		setAutoControl() {
+			if (diapo.auto) {
+				this.element.on(this.inputType, diapo.setAutoCarouselOff);
+			} else {
+				this.element.off(this.inputType, diapo.setAutoCarouselOff);
+			}
 		}
+	}
+	//------------------------------------------------
+	
 
-	});
+	let pauseButton = new CarouselControl($('#off'), "click", diapo.setAutoCarouselOff, false);
+	
+	let playButton = new CarouselControl($('#on'), "click", diapo.setAutoCarouselOn, false);
 
-	$('#slideshow, #next').on('click', nextSlide); //On click on the carousel or next button, next slide
-	$('#prev').on('click', prevSlide); //On click on the prev button, previous slide
-	//------------------------------------------------------------------------------------------------
+	let nextButton = new CarouselControl($('#next'), "click", diapo.nextSlide, true);
 
-	autoCarouselOn(); //Default state of the carousel section
+	let prevButton = new CarouselControl($('#prev'), "click", diapo.prevSlide, true);
 
+	let keypresses = new CarouselControl($('body'), "keyup", function(event) {
+		let key = event.which; //gets code of pressed key
+
+		if (key === 37) { //if left arrow is pressed
+			diapo.prevSlide();
+		} else if (key === 39) { //if right arrow is pressed
+			diapo.nextSlide();
+		}
+	}, true);
+
+	let carouselClick = new CarouselControl($('#slideshow'), "click", diapo.nextSlide, true);
+	
+	console.log(autoControls);
+
+	diapo.setAutoCarouselOn();
 });
