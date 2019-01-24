@@ -83,25 +83,22 @@ $(function (){
 	}
 	//------------------------------------------------
 	
-
+	//Sets events for the control buttons
 	let pauseButton = new CarouselControl($('#off'), "click", diapo.setAutoCarouselOff, false);
-	
 	let playButton = new CarouselControl($('#on'), "click", diapo.setAutoCarouselOn, false);
-
 	let nextButton = new CarouselControl($('#next'), "click", diapo.nextSlide, true);
-
 	let prevButton = new CarouselControl($('#prev'), "click", diapo.prevSlide, true);
-
 	let keypresses = new CarouselControl($('body'), "keyup", function(event) {
 		let key = event.which; //gets code of pressed key
 
 		if (key === 37) { //if left arrow is pressed
 			diapo.prevSlide();
+			console.log("Pressed the arrow left button.");
 		} else if (key === 39) { //if right arrow is pressed
 			diapo.nextSlide();
+			console.log("Pressed the arrow right button.");
 		}
 	}, true);
-
 	let carouselClick = new CarouselControl($('#slideshow'), "click", diapo.nextSlide, true);
 	
 	console.log(autoControls);

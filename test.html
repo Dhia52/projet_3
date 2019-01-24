@@ -3,54 +3,42 @@
 	<head>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous"> <!--FontAwesome-->
-		<link rel="stylesheet" href="css/carousel.css" type="text/css"> <!-- Custom CSS-->
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/> <!-- Leaflet CSS-->
+		<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script> <!--Leaflet js-->
+		<link rel="stylesheet" href="css/map.css" type="text/css"> <!-- Custom CSS-->
 	</head>
 
 	<body>
-		<section id="carousel"> <!-- Displays slides -->
-			<h1>Notice d'utilisation de l'application :</h1>
-			<div>
-				<i id="prev" class="fas fa-arrow-circle-left"></i>
-				<div id="slideshow">
-					<div>
-						<div class="carouselItem">
-							<img src="images/step1.png">
-							<div>
-								<h4>Etape n°1 :</h4>
-								<p>Cliquez sur l'un des marqueurs de la carte afin de sélectionner une station vélOstan'lib.</p>
-							</div>
-						</div>
-						<div class="carouselItem">
-							<img src="images/step2.png">
-							<div>
-								<h4>Etape n°2 :</h4>
-								<p>Les informations liées à la station sont alors affichées à droite de la carte.</p>
-								<p>Si des vélos sont disponibles, remplissez les champs "Nom" et "Prénom" puis cliquez sur le bouton "Réserver".</p>
-							</div>
-						</div>
-						<div class="carouselItem">
-							<img src="images/step3.png">
-							<div>
-								<h4>Etape n°3 :</h4>
-								<p>Un champ de signature apparaît.</p>
-								<p>Signez ce champ en passant le curseur dans la zone prévue à cet effet. Vous pouvez cliquer sur le bouton "Effacer la signature" pour recommencer et sur le bouton "Retour" pour réafficher les données de la station ainsi que le formulaire.</p>
-								<p>Cliquez sur "Réserver le vélo" après signature.</p>								
-							</div>
-						</div>
-						<div class="carouselItem">
-							<img src="images/step4.png">
-							<div>
-								<h4>Etape n°4 :</h4>
-								<p>Votre réservation est enregistrée et est affichée en bas de la carte.</p>
-								<p>Vous pouvez aller chercher le vélo que vous avez réservé à la station choisie.</p>
-								<p>Note : une réservation expire au bout de 20 minutes.</p>
-							</div>
-						</div>
+		<section id="booking"> <!-- Booking a bike happens here -->
+			<div id="map" class="map"></div>
+			<form>
+				<h1>Cliquez sur l'un des marqueurs de la carte.</h1>
+				<div id="stationInfo" style="display: none;">
+					<h3>Détails de la station : </h3>
+					<h4>Station : <span id="stationName"></span></h4>
+					<p>Adresse : <span id="stationAddress"></span></p>
+					<h4 id="closed" style="display: none;">La station est fermée.</h4>
+					<div id="open" style="display: none;">
+						<p>Nombre total de places : <b id="nbStands"></b></p>
+						<p>Nombre de vélos disponibles : <b id="nbBikes"></b></p>
+						<p id="banking">Cette station dispose d'un terminal de paiement.</p>
+						<h4 id="noBike" style="display: none;">Aucun vélo n'est disponible. Veuillez réessayer plus tard.</h4>		
 					</div>
 				</div>
-				<i id="next" class="fas fa-arrow-circle-right"></i>
-			</div>
-			<div id="on_off"><i id="off" class="fas fa-pause-circle"></i><i id="on" class="fas fa-play-circle"></i></div>
+				<div id="identity" style="display: none;">
+					<p><label for="surname">Nom : </label><input type="text" name="surname" id="surname"><span></span></p>
+					<p><label for="firstName">Prénom : </label><input type="text" name="firstName" id="firstName"><span></span></p>
+					<button id="book" disabled="disabled">Réserver</button>
+				</div>
+				<div id="signature" style="display: none;">
+					<p>Réservation au nom de <span></span></p>
+					<p>Signature : </p>
+					<canvas id="canvas"></canvas>
+					<button id="confirm" disabled="disabled">Réserver le vélo</button>
+					<button id="clearCanvas">Effacer la signature</button>
+					<button id="cancel">Retour</button>
+				</div>
+			</form>
 		</section>
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> <!-- Includes jQuery in the project -->
 		<script type="text/javascript" src="js/test.js"></script>
