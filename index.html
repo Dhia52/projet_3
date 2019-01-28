@@ -73,12 +73,12 @@
 						<p>Nombre de vélos disponibles : <b id="nbBikes"></b></p>
 						<p id="banking">Cette station dispose d'un terminal de paiement.</p>
 						<h4 id="noBike" style="display: none;">Aucun vélo n'est disponible. Veuillez réessayer plus tard.</h4>		
+						<div id="identity" style="display: none;">
+							<p><label for="surname">Nom : </label><input type="text" name="surname" id="surname"></p>
+							<p><label for="firstName">Prénom : </label><input type="text" name="firstName" id="firstName"></p>
+							<button id="book" disabled="disabled">Réserver</button>
+						</div>
 					</div>
-				</div>
-				<div id="identity" style="display: none;">
-					<p><label for="surname">Nom : </label><input type="text" name="surname" id="surname"><span></span></p>
-					<p><label for="firstName">Prénom : </label><input type="text" name="firstName" id="firstName"><span></span></p>
-					<button id="book" disabled="disabled">Réserver</button>
 				</div>
 				<div id="signature" style="display: none;">
 					<p>Réservation au nom de <span></span></p>
@@ -98,7 +98,6 @@
 			</div>
 		</section>
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> <!-- Includes jQuery in the project -->
-		<script type="text/javascript" src="js/mapFunctions.js"></script> <!-- Functions of the map section -->
 		<script type="text/javascript" src="js/carousel.js"></script> <!-- script of the carousel section -->
 		<script type="text/javascript" src="js/map.js"></script> <!-- script of the booking section -->
 	</body>

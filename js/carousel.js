@@ -101,7 +101,5 @@ $(function (){
 	}, true);
 	let carouselClick = new CarouselControl($('#slideshow'), "click", diapo.nextSlide, true);
 	
-	console.log(autoControls);
-
 	diapo.setAutoCarouselOn();
 });
