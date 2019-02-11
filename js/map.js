@@ -28,6 +28,23 @@ $(function() {
 		}
 	}
 
+	let dataManager = {
+		getStationsData() {
+			$.getJSON('https://api.jcdecaux.com/vls/v1/stations?contract=Nancy&apiKey=' + apiKey, function (stationsData) {
+				stationsData.forEach(stationData => {
+					let station = new Station(stationData.status, stationData.name, stationData.address, stationData.bike_stands, stationData.available_bikes, stationData.position.lat, stationData.position.lng, stationData.banking);
+
+					console.log(station.name + " : " + station.availableBikes);
+				});
+			});
+		},
+
+		refreshStationsData() {
+			$('.leaflet-marker-icon, .leaflet-marker-shadow').remove();
+			dataManager.getStationsData();
+		}
+	};
+
 	//events on form
 	let form = {
 		
@@ -240,11 +257,7 @@ $(function() {
 	}).addTo(map);
 
 	//gets stations info and displays them on map
-	$.getJSON('https://api.jcdecaux.com/vls/v1/stations?contract=Nancy&apiKey=' + apiKey, function (stationsData) {
-		stationsData.forEach(stationData => {
-			let station = new Station(stationData.status, stationData.name, stationData.address, stationData.bike_stands, stationData.available_bikes, stationData.position.lat, stationData.position.lng, stationData.banking);
-		});
-	});
+	dataManager.getStationsData();
 
 	if(localStorage.getItem('firstName')) {
 		storage.formAutoFill();
@@ -267,24 +280,29 @@ $(function() {
 		canvas.createCanvas();
 		canvas.setCanvasDimensions();
 	});
-	
 	let canvasColoring = new FormEvent($('#canvas'), "mousemove", function(event) {
 		canvas.draw(event);
 		$('#confirm').removeAttr('disabled');
 	});
-
-
 	let clearButton = new FormEvent($('#clearCanvas'), "click", function(event) {
 		event.preventDefault();
 		canvas.clear();
 		$('#confirm').attr('disabled', 'disabled');
 	});
-
 	let cancelButton = new FormEvent($('#cancel'), "click", function(event) {
 		event.preventDefault();
 		form.displayInfo();
 	});
-
 	let confirmButton = new FormEvent($('#confirm'), "click", storage.storeData);
 	
+	let refresher = setInterval(function() {
+		let now = new Date();
+		sec = now.getSeconds();
+		
+		if(sec === 0) {
+			clearInterval(refresher);
+			dataManager.refreshStationsData();
+			setInterval(dataManager.refreshStationsData, 60000);
+		}
+	}, 1000);
 });
